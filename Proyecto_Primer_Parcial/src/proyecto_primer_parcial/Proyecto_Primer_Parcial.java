@@ -16,19 +16,32 @@ public class Proyecto_Primer_Parcial {
 
         Scanner lea = new Scanner(System.in);
 
+        //Condiciones
         boolean primeraApertura = true;
         boolean cajaAbierta = false;
         boolean salir = true;
         int opcion;
 
+        //Dinero de la caja
         float montoCaja = 0;
         float montoInicial = 0;
-        float montoBanco = 0;
 
-        int ventasDiarias = 0;
-        int comprasDiarias = 0;
-
+        //Tipo de Cliente
         String tipoCliente;
+
+        //Reporte
+        float ventasDiarias = 0;
+        float comprasDiarias = 0;
+        float totalCompras = 0;
+        float totalVentas = 0;
+        float compraMasCara = 0;
+        float ventaMasCara = 0;
+        float sumaValoresCompra = 0;
+        float sumaValoresVenta = 0;
+        int totalAzucarVendida = 0;
+        int totalAvenaVendida = 0;
+        int totalTrigoVendida = 0;
+        int totalMaizVendida = 0;
 
         // Stock de productos
         float azucarStock = 0, avenaStock = 0, trigoStock = 0, maizStock = 0;
@@ -159,44 +172,46 @@ public class Proyecto_Primer_Parcial {
 
                         boolean entradaValida = false;
                         int codigo = 0;
+                        boolean puedeComprar = false;
+                        String nombreProducto = "";
+                        float precio = 0;
 
                         while (!entradaValida) {
                             System.out.print("Ingrese el codigo del producto a vender: ");
                             try {
                                 codigo = lea.nextInt();
-                                entradaValida = true;
+                                switch (codigo) {
+                                    case 1:
+                                        nombreProducto = "Azucar";
+                                        precio = 30;
+                                        puedeComprar = tipoCliente.equalsIgnoreCase("A") || tipoCliente.equalsIgnoreCase("B");
+                                        entradaValida = true;
+                                        break;
+                                    case 2:
+                                        nombreProducto = "Avena";
+                                        precio = 25;
+                                        puedeComprar = tipoCliente.equalsIgnoreCase("A") || tipoCliente.equalsIgnoreCase("B");
+                                        entradaValida = true;
+                                        break;
+                                    case 3:
+                                        nombreProducto = "Trigo";
+                                        precio = 32;
+                                        puedeComprar = tipoCliente.equalsIgnoreCase("A") || tipoCliente.equalsIgnoreCase("B");
+                                        entradaValida = true;
+                                        break;
+                                    case 4:
+                                        nombreProducto = "Maiz";
+                                        precio = 20;
+                                        puedeComprar = tipoCliente.equalsIgnoreCase("A") || tipoCliente.equalsIgnoreCase("C");
+                                        entradaValida = true;
+                                        break;
+                                    default:
+                                        System.out.println("Codigo de producto invalido.");
+                                }
                             } catch (Exception e) {
                                 System.out.println("Error: Solo numeros enteros permitidos");
+                                lea.next();
                             }
-                        }
-
-                        boolean puedeComprar = false;
-                        String nombreProducto = "";
-                        float precio = 0;
-
-                        switch (codigo) {
-                            case 1:
-                                nombreProducto = "Azucar";
-                                precio = 30;
-                                puedeComprar = tipoCliente.equalsIgnoreCase("A") || tipoCliente.equalsIgnoreCase("B");
-                                break;
-                            case 2:
-                                nombreProducto = "Avena";
-                                precio = 25;
-                                puedeComprar = tipoCliente.equalsIgnoreCase("A") || tipoCliente.equalsIgnoreCase("B");
-                                break;
-                            case 3:
-                                nombreProducto = "Trigo";
-                                precio = 32;
-                                puedeComprar = tipoCliente.equalsIgnoreCase("A") || tipoCliente.equalsIgnoreCase("B");
-                                break;
-                            case 4:
-                                nombreProducto = "Maiz";
-                                precio = 20;
-                                puedeComprar = tipoCliente.equalsIgnoreCase("A") || tipoCliente.equalsIgnoreCase("C");
-                                break;
-                            default:
-                                System.out.println("Codigo de producto invalido.");
                         }
 
                         if (!puedeComprar) {
@@ -229,24 +244,28 @@ public class Proyecto_Primer_Parcial {
                                     if (cantidad <= azucarStock) {
                                         azucarStock -= cantidad;
                                         stockSuficiente = true;
+                                        totalAzucarVendida += cantidad;
                                     }
                                     break;
                                 case 2:
                                     if (cantidad <= avenaStock) {
                                         avenaStock -= cantidad;
                                         stockSuficiente = true;
+                                        totalAvenaVendida += cantidad;
                                     }
                                     break;
                                 case 3:
                                     if (cantidad <= trigoStock) {
                                         trigoStock -= cantidad;
                                         stockSuficiente = true;
+                                        totalTrigoVendida += cantidad;
                                     }
                                     break;
                                 case 4:
                                     if (cantidad <= maizStock) {
                                         maizStock -= cantidad;
                                         stockSuficiente = true;
+                                        totalMaizVendida += cantidad;
                                     }
                                     break;
                             }
@@ -265,12 +284,21 @@ public class Proyecto_Primer_Parcial {
                             }
                         }
 
-                        System.out.print("Desea comprar otro producto? (S/N): ");
-                        String respuesta = lea.next();
-
-                        if (respuesta.equalsIgnoreCase("N")) {
-                            seguirComprando = false;
+                        String respuesta = "";
+                        boolean respuestaValida = false;
+                        while (!respuestaValida) {
+                            System.out.print("Desea comprar otro producto? (S/N): ");
+                            respuesta = lea.next();
+                            if (respuesta.equalsIgnoreCase("S")) {
+                                respuestaValida = true;
+                            } else if (respuesta.equalsIgnoreCase("N")) {
+                                respuestaValida = true;
+                                seguirComprando = false;
+                            } else {
+                                System.out.println("Respuesta invalida. Por favor ingrese solo 'S' o 'N'.");
+                            }
                         }
+
                     }
 
                     double descuento = 0;
@@ -297,6 +325,12 @@ public class Proyecto_Primer_Parcial {
                     System.out.println("--------------------------------------------------------------");
 
                     montoCaja += totalPagar;
+                    ventasDiarias++;
+                    totalVentas += totalPagar;
+                    sumaValoresVenta += totalPagar;
+                    if (totalPagar > ventaMasCara) {
+                        ventaMasCara = (float) totalPagar;
+                    }
 
                     break;
 
@@ -378,7 +412,6 @@ public class Proyecto_Primer_Parcial {
                         default:
                             System.out.println("Codigo de producto invalido.");
                             codigoValido = false;
-
                             break;
                     }
 
@@ -396,18 +429,18 @@ public class Proyecto_Primer_Parcial {
 
                     while (!cantidadValida) {
                         System.out.print("Ingrese la cantidad en kilogramos que desea comprar: ");
-                        try{
+                        try {
                             cantidadCompra = lea.nextFloat();
-                            if(cantidadCompra > 0){
+                            if (cantidadCompra > 0) {
                                 cantidadValida = true;
-                            }else{
+                            } else {
                                 System.out.println("La cantidad debe ser mayor a O");
                             }
-                        }catch(Exception e){
+                        } catch (Exception e) {
                             System.out.println("Error: Solo numeros enteros permitidos");
                             lea.next();
                         }
-                        
+
                     }
 
                     float totalCompra = cantidadCompra * precioCompra;
@@ -433,6 +466,12 @@ public class Proyecto_Primer_Parcial {
                     }
 
                     montoCaja -= totalCompra;
+                    comprasDiarias++;
+                    totalCompras += totalCompra;
+                    sumaValoresCompra += totalCompra;
+                    if (totalCompra > compraMasCara) {
+                        compraMasCara = totalCompra;
+                    }
 
                     System.out.println("\nCompra realizada exitosamente.");
                     System.out.println("Producto: " + productoCompra);
@@ -449,12 +488,72 @@ public class Proyecto_Primer_Parcial {
                         Thread.sleep(3000);
                         break;
                     }
-                    System.out.println("\n--- Reporte ---");
-                    System.out.printf("Cantidad Actual de Caja: %.2f\n", montoCaja);
-                    System.out.printf("Azucar: %.2f Kg\n", azucarStock);
-                    System.out.printf("Avena:  %.2f Kg\n", avenaStock);
-                    System.out.printf("Trigo:  %.2f Kg\n", trigoStock);
-                    System.out.printf("Maiz:   %.2f Kg\n", maizStock);
+                    System.out.println("--------------------------------");
+                    System.out.println("\tReporte del Dia");
+                    System.out.println("--------------------------------");
+                    System.out.printf("Cantidad Actual en caja: Lps. %.2f\n", montoCaja);
+                    System.out.println("Total de Compras Realizadas: " + comprasDiarias);
+                    System.out.println("Total de Ventas Realizadas: " + ventasDiarias);
+
+                    float margenGanancia = totalVentas - totalCompras;
+                    System.out.printf("Total de Compras: Lps. %.2f\n", totalCompras);
+                    System.out.printf("Total de Ventas: Lps. %.2f\n", totalVentas);
+                    System.out.printf("Margen de Ganancia: Lps. %.2f\n", margenGanancia);
+
+                    float promedioCompra = 0;
+                    float promedioVenta = 0;
+
+                    if (comprasDiarias > 0) {
+                        promedioCompra = sumaValoresCompra / comprasDiarias;
+                    } else {
+                        promedioCompra = 0;
+                    }
+
+                    if (ventasDiarias > 0) {
+                        promedioVenta = sumaValoresVenta / ventasDiarias;
+                    } else {
+                        promedioVenta = 0;
+                    }
+
+                    System.out.printf("Promedio por Compra: Lps. %.2f\n", promedioCompra);
+                    System.out.printf("Promedio por Venta: Lps. %.2f\n", promedioVenta);
+
+                    System.out.printf("Compra mas costosa: Lps. %.2f\n", compraMasCara);
+                    System.out.printf("Venta con mayor ganancia: Lps. %.2f\n", ventaMasCara);
+
+                    int maxVendidos = totalAzucarVendida;
+                    if (totalAvenaVendida > maxVendidos) {
+                        maxVendidos = totalAvenaVendida;
+                    }
+                    if (totalTrigoVendida > maxVendidos) {
+                        maxVendidos = totalTrigoVendida;
+                    }
+                    if (totalMaizVendida > maxVendidos) {
+                        maxVendidos = totalMaizVendida;
+                    }
+
+                    String productosEstrella = "";
+
+                    if (totalAzucarVendida == maxVendidos && maxVendidos > 0) {
+                        productosEstrella += "Azucar, ";
+                    }
+                    if (totalAvenaVendida == maxVendidos && maxVendidos > 0) {
+                        productosEstrella += "Avena, ";
+                    }
+                    if (totalTrigoVendida == maxVendidos && maxVendidos > 0) {
+                        productosEstrella += "Trigo, ";
+                    }
+                    if (totalMaizVendida == maxVendidos && maxVendidos > 0) {
+                        productosEstrella += "Maíz, ";
+                    }
+
+                    if (!productosEstrella.equals("")) {
+                        productosEstrella = productosEstrella.substring(0, productosEstrella.length() - 2);
+                        System.out.println("Producto Estrella(s): " + productosEstrella + " con " + maxVendidos + " Kg vendidos");
+                    } else {
+                        System.out.println("No se han vendido productos aun.");
+                    }
+
                     break;
 
                 case 5:
