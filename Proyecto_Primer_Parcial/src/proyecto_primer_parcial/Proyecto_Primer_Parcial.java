@@ -31,7 +31,7 @@ public class Proyecto_Primer_Parcial {
         String tipoCliente;
 
         // Stock de productos
-        float azucarStock = 0,avenaStock = 0,trigoStock = 0,maizStock = 0;
+        float azucarStock = 0, avenaStock = 0, trigoStock = 0, maizStock = 0;
 
         while (salir) {
 
@@ -44,33 +44,72 @@ public class Proyecto_Primer_Parcial {
             System.out.println("\t3.Compras         \t4.Reportes");
             System.out.println("\t5.Cierre de Caja  \t6.Salir");
             System.out.print("Ingrese la opcion deseada: ");
-            opcion = lea.nextInt();
+
+            try {
+                opcion = lea.nextInt();
+            } catch (Exception e) {
+                System.out.println("Error: Solo es permitido numeros enteros son permitidos...");
+                lea.next();
+                continue;
+            }
 
             switch (opcion) {
 
                 //Apertura de Caja
                 case 1:
+
                     if (!cajaAbierta) {
                         cajaAbierta = true;
+
                         if (primeraApertura) {
                             System.out.println("\033[0;1m" + "Abrir Caja");
-                            System.out.print("Ingrese la cantidad de dinero que desea guardar: ");
-                            montoInicial = lea.nextFloat();
-                            while (montoInicial <= 0) {
-                                System.out.println("El Monto inicial no puede ser menor a 0 ");
-                                Thread.sleep(2500);
-                                System.out.println("Ingrese la cantidad de dinero que desea guardar: ");
-                                montoInicial = lea.nextFloat();
+
+                            boolean entradaValida = false;
+
+                            while (!entradaValida) {
+                                System.out.print("Ingrese la cantidad de dinero que desea guardar: ");
+                                try {
+                                    montoInicial = lea.nextFloat();
+                                    if (montoInicial <= 0) {
+                                        System.out.println("El Monto inicial no puede ser menor o igual a 0");
+                                    } else {
+                                        entradaValida = true;
+                                    }
+                                } catch (Exception e) {
+                                    System.out.println("Error: Solo se permiten numeros.");
+                                    lea.next();
+                                }
                             }
+
                             montoCaja += montoInicial;
                             primeraApertura = false;
                             System.out.println("La caja ha sido iniciada");
+
                         } else {
                             System.out.println("La caja ha sido iniciada");
                         }
+
                     } else {
-                        System.out.print("Ingrese la cantidad de dinero que desea guardar: ");
-                        montoInicial = lea.nextFloat();
+
+                        boolean cantidadValida = false;
+
+                        while (!cantidadValida) {
+
+                            System.out.print("Ingrese la cantidad de dinero que desea guardar: ");
+                            try {
+                                montoInicial = lea.nextFloat();
+
+                                if (montoInicial <= 0) {
+                                    System.out.println("El monto debe ser mayor a 0.");
+                                } else {
+                                    cantidadValida = true;
+                                }
+
+                            } catch (Exception e) {
+                                System.out.println("Error: Solo se permiten numeros.");
+                                lea.next();
+                            }
+                        }
                         montoCaja += montoInicial;
                         System.out.println("Se ha añadido correctamente el dinero");
                     }
@@ -88,7 +127,7 @@ public class Proyecto_Primer_Parcial {
                     }
 
                     if (azucarStock <= 0 && avenaStock <= 0 && trigoStock <= 0 && maizStock <= 0) {
-                        System.out.println("\nNo se puede realizar ninguna venta. Todos los productos están agotados.");
+                        System.out.println("\nNo se puede realizar ninguna venta. Todos los productos estan agotados.");
                         Thread.sleep(2500);
                         break;
                     }
@@ -117,8 +156,19 @@ public class Proyecto_Primer_Parcial {
                     String detalleFactura = "";
 
                     while (seguirComprando) {
-                        System.out.print("Ingrese el codigo del producto a vender: ");
-                        int codigo = lea.nextInt();
+
+                        boolean entradaValida = false;
+                        int codigo = 0;
+
+                        while (!entradaValida) {
+                            System.out.print("Ingrese el codigo del producto a vender: ");
+                            try {
+                                codigo = lea.nextInt();
+                                entradaValida = true;
+                            } catch (Exception e) {
+                                System.out.println("Error: Solo numeros enteros permitidos");
+                            }
+                        }
 
                         boolean puedeComprar = false;
                         String nombreProducto = "";
@@ -152,8 +202,25 @@ public class Proyecto_Primer_Parcial {
                         if (!puedeComprar) {
                             System.out.println("NO PUEDE COMPRAR DICHO PRODUCTO.");
                         } else {
-                            System.out.print("Ingrese la cantidad en kilogramos que desea comprar: ");
-                            float cantidad = lea.nextFloat();
+
+                            float cantidad = 0;
+                            boolean cantidadValida = false;
+
+                            while (!cantidadValida) {
+
+                                System.out.print("Ingrese la cantidad en kilogramos que desea comprar: ");
+                                try {
+                                    cantidad = lea.nextFloat();
+                                    if (cantidad > 0) {
+                                        cantidadValida = true;
+                                    } else {
+                                        System.out.println("La cantidad debe ser mayor a 0");
+                                    }
+                                } catch (Exception e) {
+                                    System.out.println("Error: Solo numeros enteros permitidos");
+                                    lea.next();
+                                }
+                            }
 
                             boolean stockSuficiente = false;
 
@@ -208,10 +275,10 @@ public class Proyecto_Primer_Parcial {
 
                     double descuento = 0;
 
-                    if (subtotal >= 1000) {
-                        descuento = subtotal * 0.05;
-                    } else if (subtotal >= 5000) {
+                    if (subtotal >= 5000) {
                         descuento = subtotal * 0.10;
+                    } else if (subtotal >= 1000) {
+                        descuento = subtotal * 0.05;
                     }
 
                     double impuesto = subtotal * 0.07;
@@ -250,7 +317,7 @@ public class Proyecto_Primer_Parcial {
                     String tipoProveedor = lea.next();
 
                     while (!(tipoProveedor.equalsIgnoreCase("A") || tipoProveedor.equalsIgnoreCase("B") || tipoProveedor.equalsIgnoreCase("C"))) {
-                        System.out.println("Tipo de proveedor no válido.");
+                        System.out.println("Tipo de proveedor no valido.");
                         System.out.print("Ingrese el tipo de Proveedor (A/B/C): ");
                         tipoProveedor = lea.next();
                     }
@@ -263,9 +330,21 @@ public class Proyecto_Primer_Parcial {
                     System.out.println("|      4        |   Maiz        |   Lps. 18        |");
                     System.out.println("---------------------------------------------------");
 
-                    System.out.print("Ingrese el código del producto que desea comprar: ");
-                    int codigoCompra = lea.nextInt();
+                    boolean entradaValida = false;
+                    int codigoCompra = 0;
 
+                    while (!entradaValida) {
+                        System.out.print("Ingrese el codigo del producto que desea comprar: ");
+                        try {
+                            codigoCompra = lea.nextInt();
+                            entradaValida = true;
+                        } catch (Exception e) {
+                            System.out.println("Error: Solo numeros enteros permitidos");
+                            lea.next();
+                        }
+                    }
+
+                    boolean codigoValido = true;
                     boolean puedeProveer = false;
                     float precioCompra = 0;
                     String productoCompra = "";
@@ -297,8 +376,14 @@ public class Proyecto_Primer_Parcial {
                             puedeProveer = tipoProveedor.equalsIgnoreCase("A");
                             break;
                         default:
-                            System.out.println("Código de producto inválido.");
+                            System.out.println("Codigo de producto invalido.");
+                            codigoValido = false;
+
                             break;
+                    }
+
+                    if (!codigoValido) {
+                        break;
                     }
 
                     if (!puedeProveer) {
@@ -306,8 +391,24 @@ public class Proyecto_Primer_Parcial {
                         break;
                     }
 
-                    System.out.print("Ingrese la cantidad en kilogramos que desea comprar: ");
-                    float cantidadCompra = lea.nextFloat();
+                    float cantidadCompra = 0;
+                    boolean cantidadValida = false;
+
+                    while (!cantidadValida) {
+                        System.out.print("Ingrese la cantidad en kilogramos que desea comprar: ");
+                        try{
+                            cantidadCompra = lea.nextFloat();
+                            if(cantidadCompra > 0){
+                                cantidadValida = true;
+                            }else{
+                                System.out.println("La cantidad debe ser mayor a O");
+                            }
+                        }catch(Exception e){
+                            System.out.println("Error: Solo numeros enteros permitidos");
+                            lea.next();
+                        }
+                        
+                    }
 
                     float totalCompra = cantidadCompra * precioCompra;
 
@@ -364,7 +465,7 @@ public class Proyecto_Primer_Parcial {
                         Thread.sleep(3000);
                         break;
                     }
-                    
+
                     System.out.println("\n");
                     System.out.println("Cierre de Caja");
                     break;
