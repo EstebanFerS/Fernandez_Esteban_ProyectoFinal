@@ -25,6 +25,7 @@ public class Proyecto_Primer_Parcial {
         //Dinero de la caja
         float montoCaja = 0;
         float montoInicial = 0;
+        float banco = 0;
 
         //Tipo de Cliente
         String tipoCliente;
@@ -124,7 +125,7 @@ public class Proyecto_Primer_Parcial {
                             }
                         }
                         montoCaja += montoInicial;
-                        System.out.println("Se ha añadido correctamente el dinero");
+                        System.out.println("Se ha anadido correctamente el dinero");
                     }
                     break;
 
@@ -565,8 +566,39 @@ public class Proyecto_Primer_Parcial {
                         break;
                     }
 
-                    System.out.println("\n");
-                    System.out.println("Cierre de Caja");
+                    System.out.println("Ganancia Actual: " + sumaValoresVenta);
+
+                    boolean entradaValidaBanco = false;
+                    while (!entradaValidaBanco) {
+                        System.out.print("Ingrese el monto que desea guardar en el banco: ");
+                        try {
+                            banco = lea.nextFloat();
+                            if (banco <= (montoCaja * 0.60)) {
+                                System.out.println("El efectivo ha sido guardado correctamente");
+                                entradaValidaBanco = true;
+                            } else {
+                                System.out.println("Error: El monto a depositar no puede ser mayor al 60% del valor de la caja (" + (montoCaja * 0.60) + ")");
+                            }
+                        } catch (Exception e) {
+                            System.out.println("Error: Solo numeros enteros permitidos");
+                            lea.next();
+                        }
+                    }
+                    ventasDiarias = 0;
+                    comprasDiarias = 0;
+                    totalCompras = 0;
+                    totalVentas = 0;
+                    compraMasCara = 0;
+                    ventaMasCara = 0;
+                    sumaValoresCompra = 0;
+                    sumaValoresVenta = 0;
+                    totalAzucarVendida = 0;
+                    totalAvenaVendida = 0;
+                    totalTrigoVendida = 0;
+                    totalMaizVendida = 0;
+                    
+                    cajaAbierta = false;
+
                     break;
 
                 case 6:
