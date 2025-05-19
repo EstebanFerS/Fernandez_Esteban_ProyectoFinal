@@ -31,6 +31,7 @@ public class Proyecto_Primer_Parcial {
         String tipoCliente;
 
         //Reporte
+        float margenGanancia = 0;
         float ventasDiarias = 0;
         float comprasDiarias = 0;
         float totalCompras = 0;
@@ -100,7 +101,7 @@ public class Proyecto_Primer_Parcial {
                             System.out.println("La caja ha sido iniciada");
 
                         } else {
-                            System.out.println("La caja ha sido iniciada");
+                            System.out.println("La caja ha sido iniciada con " + montoCaja);
                         }
 
                     } else {
@@ -489,18 +490,19 @@ public class Proyecto_Primer_Parcial {
                         Thread.sleep(3000);
                         break;
                     }
+                    System.out.println("");
                     System.out.println("--------------------------------");
                     System.out.println("\tReporte del Dia");
                     System.out.println("--------------------------------");
                     System.out.printf("Cantidad Actual en caja: Lps. %.2f\n", montoCaja);
                     System.out.println("Total de Compras Realizadas: " + comprasDiarias);
                     System.out.println("Total de Ventas Realizadas: " + ventasDiarias);
-
-                    float margenGanancia = totalVentas - totalCompras;
+                    System.out.println("--------------------------------------------------------");
+                    margenGanancia = totalVentas - totalCompras;
                     System.out.printf("Total de Compras: Lps. %.2f\n", totalCompras);
                     System.out.printf("Total de Ventas: Lps. %.2f\n", totalVentas);
                     System.out.printf("Margen de Ganancia: Lps. %.2f\n", margenGanancia);
-
+                    System.out.println("--------------------------------------------------------");
                     float promedioCompra = 0;
                     float promedioVenta = 0;
 
@@ -515,13 +517,12 @@ public class Proyecto_Primer_Parcial {
                     } else {
                         promedioVenta = 0;
                     }
-
                     System.out.printf("Promedio por Compra: Lps. %.2f\n", promedioCompra);
                     System.out.printf("Promedio por Venta: Lps. %.2f\n", promedioVenta);
-
+                    System.out.println("--------------------------------------------------------");
                     System.out.printf("Compra mas costosa: Lps. %.2f\n", compraMasCara);
                     System.out.printf("Venta con mayor ganancia: Lps. %.2f\n", ventaMasCara);
-
+                    System.out.println("--------------------------------------------------------");
                     int maxVendidos = totalAzucarVendida;
                     if (totalAvenaVendida > maxVendidos) {
                         maxVendidos = totalAvenaVendida;
@@ -547,14 +548,13 @@ public class Proyecto_Primer_Parcial {
                     if (totalMaizVendida == maxVendidos && maxVendidos > 0) {
                         productosEstrella += "Maíz, ";
                     }
-
                     if (!productosEstrella.equals("")) {
                         productosEstrella = productosEstrella.substring(0, productosEstrella.length() - 2);
                         System.out.println("Producto Estrella(s): " + productosEstrella + " con " + maxVendidos + " Kg vendidos");
                     } else {
                         System.out.println("No se han vendido productos aun.");
                     }
-
+                    System.out.println("--------------------------------------------------------");
                     break;
 
                 case 5:
@@ -566,15 +566,16 @@ public class Proyecto_Primer_Parcial {
                         break;
                     }
 
-                    System.out.println("Ganancia Actual: " + sumaValoresVenta);
+                    System.out.println("Ganancia Actual: " + margenGanancia);
 
                     boolean entradaValidaBanco = false;
                     while (!entradaValidaBanco) {
-                        System.out.print("Ingrese el monto que desea guardar en el banco: ");
+                        System.out.print("Ingrese el monto que desea guardar en el banco(maximo:" +(montoCaja * 0.60)+ "): ");
                         try {
                             banco = lea.nextFloat();
                             if (banco <= (montoCaja * 0.60)) {
                                 System.out.println("El efectivo ha sido guardado correctamente");
+                                montoCaja -= banco;
                                 entradaValidaBanco = true;
                             } else {
                                 System.out.println("Error: El monto a depositar no puede ser mayor al 60% del valor de la caja (" + (montoCaja * 0.60) + ")");
@@ -584,6 +585,7 @@ public class Proyecto_Primer_Parcial {
                             lea.next();
                         }
                     }
+                    margenGanancia = 0;
                     ventasDiarias = 0;
                     comprasDiarias = 0;
                     totalCompras = 0;
@@ -596,7 +598,7 @@ public class Proyecto_Primer_Parcial {
                     totalAvenaVendida = 0;
                     totalTrigoVendida = 0;
                     totalMaizVendida = 0;
-                    
+
                     cajaAbierta = false;
 
                     break;
